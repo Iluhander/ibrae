@@ -1,0 +1,24 @@
+.city-name input{
+  border: 1px solid rgb(212, 212, 212);
+
+  padding: 8px;
+
+  font-size: 20px;
+}
+
+.city-name_variants {
+  border: 1px solid rgb(212, 212, 212);
+  background: white;
+
+  position: absolute;
+}
+
+.city-name_variants p {
+  margin: 0;
+  padding: 8px;
+}
+
+.city-name_variants p:hover {
+  background:rgb(212, 212, 212);
+  cursor: pointer;
+}
