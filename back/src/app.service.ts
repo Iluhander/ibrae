@@ -16,7 +16,7 @@ export class AppService {
 
   async getCityData(id): Promise<string> {
     try {
-      const res = await this.httpService.axiosRef.get(
+      const { data } = await this.httpService.axiosRef.get(
         `https://api.gismeteo.net/v2/weather/current/${id}/`,
         {
           headers: {
@@ -25,13 +25,11 @@ export class AppService {
         },
       );
 
-      console.log(res);
-
       return JSON.stringify({
-        name: 'Москва',
-        temperature: 16,
-        windSpeed: 5,
-        pressure: 752,
+        name: data.name,
+        temperature: data.temperature,
+        windSpeed: data.wind,
+        pressure: data.pressure,
       });
     } catch (e) {
       return JSON.stringify({
