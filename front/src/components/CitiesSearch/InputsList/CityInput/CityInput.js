@@ -9,13 +9,12 @@ let addingTimer;
 
 export default function CityInput({ loadCallback }) {
   // The initial list of cities we've fetched.
-  const cities = JSON.parse(localStorage.cities);
-
   const inputElem = useRef(null);
   const variantsContainer = useRef(null);
 
   // List of cities, which match current input value.
   const [availableCities, setAvailableCities] = useState([]);
+  const [cities] = useState(JSON.parse(localStorage.cities));
 
   const hideAvailableCities = () => {
     setAvailableCities([]);
@@ -31,7 +30,7 @@ export default function CityInput({ loadCallback }) {
     // Adding an input.
     clearTimeout(addingTimer);
     addingTimer = setTimeout(() => {
-      fetchCityData(inputElem.current.value).then((res) => {
+      fetchCityData(inputElem.current.value, cities).then((res) => {
         loadCallback(res);
       })
     }, 300);

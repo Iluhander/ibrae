@@ -15,7 +15,6 @@ function App() {
 
   useEffect(() => {
     getCitiesData().then((res) => {
-      console.log(res);
       localStorage.setItem('cities', JSON.stringify(res));
       setCitiesLoaded(true);
     });

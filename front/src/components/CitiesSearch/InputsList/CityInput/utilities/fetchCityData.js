@@ -1,21 +1,17 @@
+import axios from 'axios';
+
 /**
  * Fetches city wheather data.
  * @returns Object with fields 'name', 'temperature', 'windSpeed' and 'pressure'.
  */
-export const fetchCityData = (cityName) => {
-  if (cityName === 'Москва') {
-    return Promise.resolve({
-      name: 'Москва',
-      temperature: 16,
-      windSpeed: 5,
-      pressure: 752
-    });
-  } else {
-    return Promise.resolve({
-      name: 'Спб',
-      temperature: 12,
-      windSpeed: 5,
-      pressure: 752
-    });
-  }
+export const fetchCityData = async (cityName, cities) => {
+  const cityElem = cities.find((elem) => {
+    return elem.name === cityName
+  });
+
+  const cityRes = await axios.get(
+    `${process.env.REACT_APP_BACKEND}/city_data/${cityElem.index}`
+  );
+
+  return Promise.resolve(cityRes.data);
 };
