@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import store from './state/store';
+import { useDispatch } from 'react-redux';
 
-import { Provider } from 'react-redux';
 import CitiesList from './components/CitiesList/CitiesList';
 import InputsList from './components/CitiesSearch/InputsList/InputsList';
 import TemperatureSlider from './components/CitiesSearch/TemperatureSlider/TemperatureSlider';
@@ -9,32 +8,23 @@ import TemperatureSlider from './components/CitiesSearch/TemperatureSlider/Tempe
 import getCitiesData from './utilities/getCitiesData';
 
 import './App.css';
+import { setAvailableCities } from './state/availableCitiesSlice';
 
 function App() {
-  const [citiesLoaded, setCitiesLoaded] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getCitiesData().then((res) => {
-      localStorage.setItem('cities', JSON.stringify(res));
-      setCitiesLoaded(true);
+      dispatch(setAvailableCities(res));
     });
   }, []);
 
-  let pageItems = [];
-  if (citiesLoaded) {
-    pageItems = (
-      <Provider store={store}>
-        <InputsList />
+  return (
+    <div className="App">
+      <InputsList />
         <h1>Дашборд</h1>
         <TemperatureSlider />
         <CitiesList />
-      </Provider>
-    );
-  }
-
-  return (
-    <div className="App">
-      {pageItems}
     </div>
   );
 }

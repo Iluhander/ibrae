@@ -1,26 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import { fetchCityData } from './utilities/fetchCityData';
 
 import './CityInput.css';
 
-// This is needed to prevent way too much requests.
-let addingTimer;
-
 export default function CityInput({ loadCallback }) {
+  // This is needed to prevent way too much requests.
+  let addingTimer;
+
   // The initial list of cities we've fetched.
   const inputElem = useRef(null);
   const variantsContainer = useRef(null);
 
   // List of cities, which match current input value.
   const [availableCities, setAvailableCities] = useState([]);
-  const [cities] = useState(JSON.parse(localStorage.cities));
+  const cities = useSelector(state => state.availableCities).list;
 
   const hideAvailableCities = () => {
     setAvailableCities([]);
   }
 
   const updateAvailableCities = () => {
+    if (!cities?.length) {
+      return;
+    }
+    
     setAvailableCities(cities);
   }
 
@@ -33,7 +38,7 @@ export default function CityInput({ loadCallback }) {
       fetchCityData(inputElem.current.value, cities).then((res) => {
         loadCallback(res);
       })
-    }, 300);
+    }, 150);
   }
 
   const onInputChange = (e) => {
@@ -52,7 +57,7 @@ export default function CityInput({ loadCallback }) {
 
   // Creating array of matching cities.
   let availableCitiesElem = [];
-  for (let i = 0; i < availableCities.length; i += 1) {
+  for (let i = 0; i < Math.min(availableCities.length, 10); i += 1) {
     availableCitiesElem.push(
       <p key={`a_cities${i}`}>{availableCities[i].name}</p>
     );
@@ -81,6 +86,7 @@ export default function CityInput({ loadCallback }) {
         ref={inputElem} 
         onClick={updateAvailableCities}
         onChange={onInputChange}
+        placeholder="Название города..."
       />
       <div ref={variantsContainer} className="city-name_variants">
         {availableCitiesElem}

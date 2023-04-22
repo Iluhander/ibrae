@@ -29,7 +29,7 @@ export class AppService {
 
   async getCitiesList(): Promise<string> {
     const res = await this.httpService.axiosRef.get(
-      'https://worldweather.wmo.int/ru/json/full_city_list.txt'
+      'https://worldweather.wmo.int/ru/json/full_city_list.txt',
     );
 
     return Promise.resolve(res.data);

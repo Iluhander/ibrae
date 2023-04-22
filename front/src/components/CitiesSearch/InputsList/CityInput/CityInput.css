@@ -11,6 +11,7 @@
   background: white;
 
   position: absolute;
+  z-index: 100;
 }
 
 .city-name_variants p {

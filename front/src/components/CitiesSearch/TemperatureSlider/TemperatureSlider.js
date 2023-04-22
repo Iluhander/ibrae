@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { filterCities } from '../../../state/citiesSlice';
@@ -10,13 +10,13 @@ let updateCities;
 export default function TemperatureSlider() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // Getting slider elements ones per render.
-    const tSlider = document.querySelector('.t-slider');
-    const sliderFiller = document.querySelector('.t-slider_filler');
-    const tSliderHandle = document.querySelector('.t-slider_handle');
-    const tValueElem = document.querySelector('.t-slider_handle p');
+  // Slider elements.
+  const tSlider = useRef(null);
+  const sliderFiller = useRef(null);
+  const tSliderHandle = useRef(null);
+  const tValueElem = useRef(null);
 
+  useEffect(() => {
     function setTemperature(handlePos) {
       // This prevents from thousands of rerenders.
       clearTimeout(updateCities);
@@ -24,13 +24,13 @@ export default function TemperatureSlider() {
       handlePos = Math.min(Math.max(handlePos, 0), 300);
  
       // Moving the handle.
-      tSliderHandle.style.marginLeft = `${handlePos}px`;
-      sliderFiller.style.width = `${handlePos}px`;
+      tSliderHandle.current.style.marginLeft = `${handlePos}px`;
+      sliderFiller.current.style.width = `${handlePos}px`;
 
       // Filtering cities.
 
       let t = (handlePos - 100) / 4;
-      tValueElem.innerText = t;
+      tValueElem.current.innerText = t;
 
       // I've added some precision for convinience.
       updateCities = setTimeout(() => {
@@ -39,22 +39,20 @@ export default function TemperatureSlider() {
     }
 
     function mouseHandler(e) {
-      const handlePos = e.clientX - tSlider.offsetLeft;
+      const handlePos = e.clientX - tSlider.current.offsetLeft;
       setTemperature(handlePos);
     }
 
-    function setMouseMove(e) {
-      e.target.addEventListener('click', mouseHandler);
-      e.target.addEventListener('mousemove', mouseHandler);
-    }
-  
-    function resetMouseMove(e) {
-      e.target.removeEventListener('click', mouseHandler);
-      e.target.removeEventListener('mousemove', mouseHandler);
+    function mouseDownHandler(e) {
+      document.addEventListener('mousemove', mouseHandler);
     }
 
-    tSlider.addEventListener('mousedown', setMouseMove);
-    tSlider.addEventListener('mouseover', resetMouseMove);
+    tSlider.current.addEventListener('mousedown', mouseDownHandler)
+    tSliderHandle.current.addEventListener('mousedown', mouseDownHandler);
+
+    document.addEventListener('mouseup', () => {
+      document.removeEventListener('mousemove', mouseHandler);
+    });
 
     setTemperature(120);
   });
@@ -62,12 +60,12 @@ export default function TemperatureSlider() {
   return (
     <>
       <p>Где сейчас теплее, чем</p>
-      <div className="t-slider">
-        <div className="t-slider_handle">
+      <div ref={tSlider} className="t-slider">
+        <div ref={tSliderHandle} className="t-slider_handle">
           <div />
-          <p>-25</p >  
+          <p ref={tValueElem}>-25</p >  
         </div>
-        <div className="t-slider_filler" />
+        <div ref={sliderFiller} className="t-slider_filler" />
       </div>      
     </>    
   );

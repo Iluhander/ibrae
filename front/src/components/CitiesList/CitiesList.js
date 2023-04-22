@@ -20,14 +20,11 @@ function makeCards(cardsList, temperatureMin) {
   }
 
   // Creating the array of elements for react to render.
-  let cardsListElem = [];
-  for (let i = 0; i < cardsList.length; i += 1) {
-    if (cardsList[i].temperature >= temperatureMin) {
-      cardsListElem.push(
-        <CityCard key={`city_card${i}`} index={i} {...cardsList[i]} />
-      );
-    }
-  }
+  let cardsListElem = cardsList
+    .filter((elem) => elem.temperature >= temperatureMin)
+    .map((elem, index) => {
+      return <CityCard key={`city_card${index}`} index={index} {...elem} />;
+    });
 
   return cardsListElem;
 }

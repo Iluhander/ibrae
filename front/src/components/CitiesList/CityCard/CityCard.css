@@ -37,7 +37,7 @@
 }
 
 .city_remove-elem {
-  z-index: 100;
+  z-index: 20;
 
   grid-column: 3;
   grid-row: 1;

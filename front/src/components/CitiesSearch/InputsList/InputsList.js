@@ -42,7 +42,7 @@ export default function InputsList() {
     dataFetched.push(undefined);
     setInputsList([
       ...inputsList,
-      <CityInput key={`city_input_${id}`} loadCallback={loadCallback} />
+      { id, loadCallback }
     ]);
   }
 
@@ -51,9 +51,13 @@ export default function InputsList() {
     addInput();
   }, []);
 
+  const inputsListElem = inputsList.map(({ id, loadCallback }) => {
+    return <CityInput key={`city_input_${id}`} loadCallback={loadCallback} />;
+  });
+
   return (
     <section className="cities-inputs">
-      {inputsList}
+      {inputsListElem}
       <button onClick={addInput}>+</button>
     </section>
   );
