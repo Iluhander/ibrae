@@ -45,7 +45,7 @@ export default function CityInput({ loadCallback }) {
     const newAvailable = [];
     for (let i = 0; i < cities.length; ++i) {
       const targetName = e.target.value.replace(/\s/g, '').toLowerCase();
-      const cityName = cities[i].name.toLowerCase()
+      const cityName = cities[i].toLowerCase()
 
       if (cityName.startsWith(targetName)) {
         newAvailable.push(cities[i]);
@@ -59,7 +59,7 @@ export default function CityInput({ loadCallback }) {
   let availableCitiesElem = [];
   for (let i = 0; i < Math.min(availableCities.length, 10); i += 1) {
     availableCitiesElem.push(
-      <p key={`a_cities${i}`}>{availableCities[i].name}</p>
+      <p key={`a_cities${i}`}>{availableCities[i]}</p>
     );
   }
 
