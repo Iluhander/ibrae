@@ -10,7 +10,7 @@ export const fetchCityData = async (cityName, cities) => {
   });
 
   const cityRes = await axios.get(
-    `${process.env.REACT_APP_BACKEND}/city_data/${cityElem.index}`
+    `${process.env.REACT_APP_BACKEND}/city_data/${cityElem.name}`
   );
 
   return Promise.resolve(cityRes.data);

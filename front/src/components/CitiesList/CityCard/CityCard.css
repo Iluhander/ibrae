@@ -4,7 +4,7 @@
   padding: 8px;
 
   display: grid;
-  grid-template-columns: repeat(3, 50px);
+  grid-template-columns: repeat(3, 56px);
   grid-template-rows: 30px 60px 20px 20px;
 
   font-size: 14px;
@@ -19,11 +19,26 @@
 }
 
 .city_name {
-  grid-column: 1;
+  grid-column: 1 / 4;
   grid-row: 1;
 }
 
+.city_name h3 {
+  background: white;
+
+  overflow: hidden;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+.city:hover h3 {
+  z-index: 10;
+  overflow: visible;
+}
+
 .city_remove-elem {
+  z-index: 100;
+
   grid-column: 3;
   grid-row: 1;
 

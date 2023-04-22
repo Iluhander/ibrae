@@ -1,6 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { AppService } from './app.service';
-import { AxiosResponse } from 'axios';
 
 @Controller()
 export class AppController {
@@ -11,9 +10,8 @@ export class AppController {
     return this.appService.getCitiesList();
   }
 
-  @Get('city_data/:id')
-  async getCityData(@Param('id') id): Promise<string> {
-    console.log(id);
-    return this.appService.getCityData(id);
+  @Get('city_data/:name')
+  async getCityData(@Param('name') name: string): Promise<string> {
+    return this.appService.getCityData(name);
   }
 }
